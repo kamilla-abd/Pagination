@@ -4,8 +4,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 
 @Controller
@@ -15,6 +14,31 @@ public class StudentController {
 
     public StudentController(StudentService studentService) {
         this.studentService = studentService;
+    }
+
+    @GetMapping("/create")
+    public String create(Model model) {
+        model.addAttribute("student", new Student());
+        return "create";
+    }
+
+    @PostMapping("/save")
+    public String saveStudent(@ModelAttribute Student student) {
+        studentService.saveStudent(student);
+        return "create";
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public String deleteStudent(@PathVariable("id") int id) {
+        studentService.deleteStudent(id);
+        return "redirect:/students";
+    }
+
+    @PostMapping("/update/{id}")
+    public String updateStudent(@PathVariable("id") int id, @ModelAttribute Student student) {
+        student.setId(id);
+        studentService.saveStudent(student);
+        return "redirect:/students";
     }
 
     @GetMapping("/students")
