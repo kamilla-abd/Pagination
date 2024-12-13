@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Students</title>
+</head>
+<body>
+<h2>Students</h2>
+
+<!-- Search Form -->
+<form method="get" th:action="@{/students}" class="mb-3">
+    <div class="row">
+        <div class="col-md-8">
+            <input type="text" name="search" th:value="${search}" class="form-control" placeholder="Search by name" />
+        </div>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-primary w-100">Search</button>
+        </div>
+    </div>
+</form>
+
+<br>
+
+<!-- Displaying Students -->
+<h3>Results</h3>
+<ul>
+    <th:block th:each="student : ${students}">
+        <li th:text="${student.firstName} + ' ' + ${student.lastName}">Student Name</li>
+    </th:block>
+</ul>
+
+<!-- Pagination -->
+<div>
+        <span th:if="${currentPage > 0}">
+            <a th:href="@{/students(page=${currentPage - 1}, size=${size}, search=${search})}">Previous</a>
+        </span>
+    |
+    <span th:if="${currentPage < totalPages - 1}">
+            <a th:href="@{/students(page=${currentPage + 1}, size=${size}, search=${search})}">Next</a>
+        </span>
+</div>
+
+</body>
+</html>
